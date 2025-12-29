@@ -11,7 +11,9 @@ const app = express();
 connectDB();
 
 app.use(cors({
-  origin: "https://pastebin-snowy-rho.vercel.app/"
+  origin: "https://pastebin-snowy-rho.vercel.app",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
