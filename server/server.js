@@ -11,7 +11,7 @@ const app = express();
 connectDB();
 
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: "https://pastebin-snowy-rho.vercel.app/"
 }));
 
 app.use(express.json());
