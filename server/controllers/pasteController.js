@@ -72,6 +72,7 @@ export const getPaste = async (req, res) => {
   }
 };
 
+
 export const viewPasteHTML = async (req, res) => {
   try {
     const paste = await Paste.findById(req.params.id);
@@ -99,19 +100,59 @@ export const viewPasteHTML = async (req, res) => {
       await paste.save();
     }
 
-    // ✅ SAFE HTML RESPONSE
+    // 🔐 SAFE ESCAPING (VERY IMPORTANT)
+    const safeContent = paste.content
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // 🎨 STYLED HTML RESPONSE
     res.status(200).send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>View Paste</title>
-        </head>
-        <body>
-          <h2>Paste Content</h2>
-          <pre>${paste.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre>
-        </body>
-      </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Paste - Pastebin Lite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    pre { font-family: 'Fira Code', monospace; }
+    .code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen flex items-center justify-center px-4">
+<div class="max-w-3xl w-full mx-auto fade-in">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Pastebin Lite</h1>
+      <p class="text-gray-600">Viewing shared paste</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+        <h2 class="text-white font-semibold text-lg text-center">Paste Content</h2>
+      </div>
+
+      <div class="p-6   ">
+        <pre class="code-block text-center text-2xl">${safeContent}</pre>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
     `);
+
   } catch (error) {
     res.status(404).send("Paste not found");
   }
