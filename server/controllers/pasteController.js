@@ -72,7 +72,6 @@ export const getPaste = async (req, res) => {
   }
 };
 
-
 export const viewPasteHTML = async (req, res) => {
   try {
     const paste = await Paste.findById(req.params.id);
@@ -134,6 +133,12 @@ export const viewPasteHTML = async (req, res) => {
 <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen flex items-center justify-center px-4">
 <div class="max-w-3xl w-full mx-auto fade-in">
     <div class="text-center mb-8">
+    <div class="flex items-center justify-center mb-4">
+    <svg class="w-12 h-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  </div>
       <h1 class="text-3xl font-bold text-gray-900 mb-2">Pastebin Lite</h1>
       <p class="text-gray-600">Viewing shared paste</p>
     </div>
@@ -143,8 +148,11 @@ export const viewPasteHTML = async (req, res) => {
         <h2 class="text-white font-semibold text-lg text-center">Paste Content</h2>
       </div>
 
-      <div class="p-6   ">
-        <pre class="code-block text-center text-2xl">${safeContent}</pre>
+      <div class="p-6 flex justify-center">
+  <pre class="code-block text-center text-2xl
+           w-full max-w-2xl
+           max-h-[60vh] overflow-y-auto overflow-x-hidden
+           whitespace-pre-wrap break-all">${safeContent}</pre>
       </div>
 
     </div>
@@ -157,3 +165,4 @@ export const viewPasteHTML = async (req, res) => {
     res.status(404).send("Paste not found");
   }
 };
+
