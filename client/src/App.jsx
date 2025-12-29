@@ -52,7 +52,7 @@ export default function PastebinApp() {
       }
 
       // Construct the full URL
-      const fullUrl = `http://localhost:5000/p/${data.id}`;
+      const fullUrl = `https://pastebin-uwyr.onrender.com/p/${data.id}`;
       setPasteUrl(fullUrl);
       
       // Clear the input fields
